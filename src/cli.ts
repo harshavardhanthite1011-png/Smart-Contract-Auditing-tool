@@ -23,9 +23,7 @@ import { CompiledContract } from '@midnight-ntwrk/midnight-js-protocol/compact-j
 // @ts-expect-error Required for wallet sync
 globalThis.WebSocket = WebSocket;
 
-// Must match the privateStateId used at deploy time so the CLI reconnects to
-// the same private state. The hello-world contract has no witnesses (empty state).
-const PRIVATE_STATE_ID = 'helloWorldPrivateState';
+const PRIVATE_STATE_ID = 'contractAuditorPrivateState';
 
 const { network, config: networkConfig } = resolveNetwork();
 const WALLET = getOrCreateWallet(network);
@@ -36,7 +34,7 @@ const SEED = WALLET.seed;
 }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const zkConfigPath = path.resolve(__dirname, '..', 'contracts', 'managed', 'hello-world');
+const zkConfigPath = path.resolve(__dirname, '..', 'contracts', 'managed', 'ContractAuditor');
 
 // Load compiled contract
 const contractPath = path.join(zkConfigPath, 'contract', 'index.js');
@@ -47,10 +45,17 @@ if (!fs.existsSync(contractPath)) {
   process.exit(1);
 }
 
-const HelloWorld = await import(pathToFileURL(contractPath).href);
+const ContractAuditor = await import(pathToFileURL(contractPath).href);
 
-const compiledContract = CompiledContract.make('hello-world', HelloWorld.Contract).pipe(
-  CompiledContract.withVacantWitnesses,
+const compiledContract = CompiledContract.make('ContractAuditor', ContractAuditor.Contract).pipe(
+  CompiledContract.withWitnesses({
+    vulnerability_witness: () => ({
+      hash: Buffer.alloc(32),
+      severity: 1n,
+      auditor_id: Buffer.alloc(32),
+      findings: Buffer.alloc(32)
+    })
+  }),
   CompiledContract.withCompiledFileAssets(zkConfigPath),
 );
 
@@ -85,7 +90,7 @@ async function createProviders(walletCtx: WalletContext) {
 
   return {
     privateStateProvider: levelPrivateStateProvider({
-      privateStateStoreName: 'hello-world-state',
+      privateStateStoreName: 'contract-auditor-state',
       accountId,
       privateStoragePasswordProvider: () => privateStatePassword,
     }),
@@ -182,8 +187,13 @@ async function main() {
           const message = await rl.question('  Enter your message: ');
           console.log('\n  Submitting transaction (this may take 30-60 seconds)...');
           try {
-            const tx = await deployed.callTx.storeMessage(message);
-            console.log(`\n  ✅ Message stored: "${message}"`);
+            const tx = await deployed.callTx.submit_audit(
+              Buffer.alloc(32, 1),
+              Buffer.alloc(32, 2),
+              1n,
+              Buffer.alloc(32, 3)
+            );
+            console.log(`\n  ✅ Audit stored`);
             console.log(`  Transaction ID: ${tx.public.txId}`);
             console.log(`  Block height: ${tx.public.blockHeight}\n`);
           } catch (error) {
@@ -197,9 +207,8 @@ async function main() {
           try {
             const contractState = await providers.publicDataProvider.queryContractState(deployment.address);
             if (contractState) {
-              const ledgerState = HelloWorld.ledger(contractState.data);
-              const message = Buffer.from(ledgerState.message).toString();
-              console.log(`\n  📋 Current message: "${message}"\n`);
+              const ledgerState = ContractAuditor.ledger(contractState.data);
+              console.log(`\n  📋 Current ledger state:`, ledgerState);
             } else {
               console.log('\n  📋 No message found (contract state empty)\n');
             }

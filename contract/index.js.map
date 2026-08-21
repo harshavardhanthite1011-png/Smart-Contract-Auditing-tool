@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../",
+  "sources": ["scratch.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAAA;;;;;;;;;;MAGA,AAAA,IAEC;;OAAA;;;;GACA;EAND;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;GAMC;EAHD,AAAA,OAEC,CAFmB,GAAU,6BACpB,GAAC,wBACV;;;;;;;;;;;;;;;;;;;;;;;EAFD,AAAA,IAEC;;;;UAFmB,GAAU;;;;;;;;kCAAV,GAAU;GAE7B;;;;"
+}

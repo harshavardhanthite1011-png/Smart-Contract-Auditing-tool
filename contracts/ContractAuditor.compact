@@ -1,0 +1,49 @@
+pragma language_version >= 0.14.0;
+
+import CompactStandardLibrary;
+
+export enum Severity {
+  Safe,
+  Low,
+  Medium,
+  High,
+  Critical
+}
+
+export struct AuditRecord {
+  contract_hash: Bytes<32>,
+  severity: Severity,
+  vulnerability_commitment: Bytes<32>
+}
+
+export struct VulnerabilityDetails {
+  language: Bytes<16>,
+  finding_type: Bytes<32>,
+  description: Bytes<64>
+}
+
+export ledger audit_records: Map<Bytes<32>, AuditRecord>;
+export ledger disclosed_vulnerabilities: Map<Bytes<32>, VulnerabilityDetails>;
+
+witness vulnerability_witness(audit_id: Bytes<32>): VulnerabilityDetails;
+
+export circuit submit_audit(
+  audit_id: Bytes<32>,
+  contract_hash: Bytes<32>,
+  severity: Severity,
+  vulnerability_commitment: Bytes<32>
+): [] {
+  assert(!audit_records.member(disclose(audit_id)), "Audit ID already exists");
+
+  audit_records.insert(disclose(audit_id), AuditRecord {
+    contract_hash: disclose(contract_hash),
+    severity: disclose(severity),
+    vulnerability_commitment: disclose(vulnerability_commitment)
+  });
+}
+
+export circuit disclose_vulnerability(audit_id: Bytes<32>): [] {
+  assert(audit_records.member(disclose(audit_id)), "Audit ID does not exist");
+  
+  disclosed_vulnerabilities.insert(disclose(audit_id), disclose(vulnerability_witness(audit_id)));
+}
