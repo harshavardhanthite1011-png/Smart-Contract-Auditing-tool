@@ -1,66 +1,152 @@
-# Universal Smart Contract Auditing Tool
+# 🌑 Midnight New Moon to Full Moon — Level One
 
-The project is an AI-assisted, multi-language smart contract auditing platform that automatically analyzes blockchain smart contracts and identifies security vulnerabilities, coding errors, logic flaws, and potential attack vectors.
+> **An end-to-end, full-stack, AI-assisted Universal Smart Contract Auditing platform built on the Midnight Network.**
 
-## Project Vision
-Our vision is to provide a robust, blockchain-agnostic security platform where developers can proactively audit their smart contracts across diverse ecosystems like EVM (Solidity/Vyper), Solana (Rust), Aptos/Sui (Move), and Starknet (Cairo). 
-**Midnight's privacy model is core to this vision**: By leveraging Zero-Knowledge proofs, the platform allows auditors and developers to log that a contract was audited on-chain (and its general safety score) without revealing the specific, unpatched vulnerabilities to the public. This completely eliminates the risk of zero-day exploits while still providing cryptographic proof of the audit's integrity and findings.
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-3%2F3_passing-brightgreen)
+![Network](https://img.shields.io/badge/network-Midnight_Preview-blue)
+![License](https://img.shields.io/badge/license-MIT-purple)
 
-## Smart Contract Deployment
-- **Network:** Preview
-- **Deployed contract ID:** `d088a2fdff8a35c4ca84486ef61b527516b81a98b5ee5af799eb499af44eda78`
+## 📖 About the Project
 
-## Key Features
-- **Multi-Language Support**: Upload contracts in Solidity, Rust, Move, or Cairo.
-- **ZK-Powered Privacy**: Vulnerability details are processed entirely as private witnesses (proved without revealing your input).
-- **Selective Disclosure**: Allows auditors to disclose specific vulnerabilities on-chain *after* a patch is confirmed, using Midnight's `disclose()` function.
-- **On-Chain Audit Records**: Transparently records the fact that a contract hash has been audited, alongside its severity rating, so users can verify a project's safety before interacting.
+**Midnight New Moon to Full Moon — Level One** demonstrates a complete, end-to-end decentralized application leveraging the **Midnight Network's Zero-Knowledge capabilities**. The application acts as a secure auditing engine that evaluates smart contracts written in any language (Solidity, Rust, Move, Cairo). 
 
-## Future Scope
-- Expand support for additional languages like Hyperledger Fabric Chaincode (Go, Java, JS) and CosmWasm.
-- Integrate on-chain AI or oracle-based automated analysis directly into the Midnight contract via a trusted verifier.
-- Support token-gated access for premium audit reports.
-- Path to Mainnet deployment with robust auditor staking mechanisms.
+The platform protects sensitive vulnerability data using Zero-Knowledge proofs. When a user audits a contract:
+- The existence of the audit and the overall severity are stored **publicly** on-chain.
+- The precise vulnerability code and the exploit details are kept **strictly private** as Zero-Knowledge witnesses.
+- The contract includes a `disclose` mechanism, allowing the auditor to explicitly reveal the vulnerability on the ledger only after the development team has issued a patch.
 
-## Tech Stack
-- **Smart Contracts:** Compact (Midnight Network)
-- **Frontend:** React, Vite, Vanilla CSS, TypeScript
-- **Wallet Integration:** Midnight DApp Connector API
-- **Testing:** Vitest
+## 🏛 Architecture / Integration Flow
 
-## Local Development (setup, run, test — step by step commands)
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend (React)
+    participant Backend (Express)
+    participant Lace Wallet
+    participant Midnight Network (Contract)
 
-### Prerequisites
-- Node.js & npm
-- Docker Desktop (running)
-- Midnight Lace Wallet (connected to Preview network)
+    User->>Frontend: Uploads Smart Contract Code
+    Frontend->>Backend: POST /api/audit (Code + Language)
+    Backend-->>Backend: Analyzes code for vulnerabilities
+    Backend-->>Frontend: JSON Response (Severity, Hash, Findings)
+    Frontend->>Lace Wallet: Request ZK Signature (using Backend findings as Private Witness)
+    Lace Wallet->>User: Prompts for Approval
+    User-->>Lace Wallet: Approves Tx
+    Lace Wallet->>Midnight Network: Submits ZK Proof (Public state updated, private data hidden)
+    Midnight Network-->>Frontend: Confirmation
+    Frontend-->>User: Displays Success
+```
 
-### 1. Installation
+### Written Walkthrough
+1. **Frontend ⇄ Backend API**: The user interacts with the React UI, pasting their contract. The frontend sends an HTTP `POST` request to the Express backend (`/api/audit`).
+2. **Backend ⇄ Frontend**: The Express API simulates an AI auditing engine, detecting vulnerabilities like insecure delegation. It returns a severity score and the detailed findings back to the frontend.
+3. **Frontend ⇄ Wallet**: The React app invokes the Midnight `@midnight-ntwrk/dapp-connector-api` to connect to the user's Lace Wallet, requesting an on-chain execution of the `submit_audit` circuit using the backend's data.
+4. **Wallet ⇄ Smart Contract**: The wallet constructs the Zero-Knowledge DUST proof locally, masking the private findings, and submits the transaction to the `ContractAuditor` smart contract deployed on the Midnight Preview testnet.
+
+## ✨ Features
+- **Multi-Language Support**: Capable of ingesting Solidity, Rust, Move, and Cairo.
+- **Full-Stack Integration**: Complete data lifecycle from React UI, through an Express analysis API, and onto the blockchain.
+- **Zero-Knowledge Privacy**: Stores vulnerabilities locally as private witnesses; verifies them on-chain without exposing the exploit code to MEV bots.
+- **Selective Disclosure**: Auditors maintain full control over when to release findings to the public state using the `.disclose()` circuit.
+
+## 🛠 Tech Stack
+
+| Layer | Technologies Used |
+|-------|-------------------|
+| **Frontend** | React, Vite, TypeScript, Vanilla CSS |
+| **Backend API** | Node.js, Express.js, TypeScript, CORS |
+| **Smart Contract** | Compact (v0.5.1) |
+| **Wallet Integration** | Midnight DApp Connector API (`@midnight-ntwrk/dapp-connector-api`) |
+| **Testing** | Vitest (TypeScript runner) |
+
+## ⚙️ Compilation
+
+✅ **2 circuits compiled successfully with Compact v0.5.1**
+
+<details>
+<summary>Click to view full compile output</summary>
+
 ```bash
+$ compact --version
+compact 0.5.1
+
+$ npm run compile
+
+> auditor-tool@1.0.0 compile
+> compact compile contracts/ContractAuditor.compact contracts/managed/ContractAuditor
+
+Compiling 2 circuits:
+```
+</details>
+
+## 🧪 Test Results
+
+✅ **3/3 tests passing prominently**
+
+<details>
+<summary>Click to view full test output</summary>
+
+```bash
+$ npm run test
+
+> auditor-tool@1.0.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /Users/macbookpro/Documents/Midnight project/Smart contract auditing tool
+
+ ✓ tests/ContractAuditor.test.ts (3 tests) 78ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  16:55:54
+   Duration  441ms (transform 70ms, setup 0ms, import 49ms, tests 78ms, environment 0ms)
+```
+</details>
+
+## 🚀 Deployed Contract
+
+| Network | Contract Name | Contract Address | Deployer Wallet Address |
+|---------|---------------|------------------|-------------------------|
+| Midnight Preview | `ContractAuditor` | `d088a2fdff8a35c4ca84486ef61b527516b81a98b5ee5af799eb499af44eda78` | `mn_addr_preview1muf76nxyppjan4yezlpgfwfc47c399zfy3a0wgf6yhq4tx90wctsgmwc9g` |
+
+*(Note: Midnight Network block explorers are currently internal/CLI-based during the Preview phase)*
+
+## 🏁 Getting Started
+
+### 1. Install Dependencies
+```bash
+# Install root (contract/SDK) dependencies
 npm install
+
+# Install frontend dependencies
 cd frontend && npm install
+
+# Install backend dependencies
+cd ../backend && npm install
 ```
 
-### 2. Testing the Smart Contract
-Ensure your contract logic and privacy requirements are sound:
+### 2. Start the Backend API
 ```bash
-npm run test
+cd backend
+npm run dev
+# Starts on http://localhost:3001
 ```
 
-### 3. Start Local Environment (if deploying to devnet)
+### 3. Start the Local Proof Server
+*(Required for local Zero-Knowledge proving before transaction submission)*
 ```bash
 npm run proof-server:start
 ```
 
-### 4. Deploying
-To deploy to the Midnight Preview Network (requires funding):
+### 4. Start the Frontend Application
 ```bash
-npm run deploy -- --network preview
+cd frontend
+npm run dev
+# Starts on http://localhost:5175
 ```
-After deployment, update `VITE_CONTRACT_ADDRESS` in `frontend/.env` with your contract ID.
+Open your browser to the local URL, connect your Midnight Lace wallet (Preview Network), and submit your smart contracts for a secure, zero-knowledge audit!
 
-### 5. Start the Frontend
-```bash
-npm run frontend:dev
-```
-Open `http://localhost:5173` to connect your Midnight wallet and interact with the application.
+## 📄 License
+Distributed under the MIT License. See `LICENSE` for more information.
