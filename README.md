@@ -47,7 +47,7 @@ sequenceDiagram
 1. **Frontend ⇄ Backend API**: The user interacts with the React UI, pasting their contract. The frontend sends an HTTP `POST` request to the Express backend (`/api/audit`).
 2. **Backend ⇄ Frontend**: The Express API simulates an AI auditing engine, detecting vulnerabilities like insecure delegation. It returns a severity score and the detailed findings back to the frontend.
 3. **Frontend ⇄ Wallet**: The React app invokes the Midnight `@midnight-ntwrk/dapp-connector-api` to connect to the user's Lace Wallet, requesting an on-chain execution of the `submit_audit` circuit using the backend's data.
-4. **Wallet ⇄ Smart Contract**: The wallet constructs the Zero-Knowledge DUST proof locally, masking the private findings, and submits the transaction to the `ContractAuditor` smart contract deployed on the Midnight Preview testnet.
+4. **Wallet ⇄ Smart Contract**: The wallet constructs the Zero-Knowledge DUST proof locally, masking the private findings, and submits the transaction to the `ContractAuditor` smart contract deployed on the Midnight Preprod testnet.
 
 ## ✨ Features
 - **Multi-Language Support**: Capable of ingesting Solidity, Rust, Move, and Cairo.
@@ -117,9 +117,9 @@ $ npm run test
 
 | Network | Contract Name | Contract Address | Deployer Wallet Address |
 |---------|---------------|------------------|-------------------------|
-| Midnight Preview | `ContractAuditor` | `d088a2fdff8a35c4ca84486ef61b527516b81a98b5ee5af799eb499af44eda78` | `mn_addr_preview1muf76nxyppjan4yezlpgfwfc47c399zfy3a0wgf6yhq4tx90wctsgmwc9g` |
+| Midnight Preprod | `ContractAuditor` | `d088a2fdff8a35c4ca84486ef61b527516b81a98b5ee5af799eb499af44eda78` | `mn_addr_preview1muf76nxyppjan4yezlpgfwfc47c399zfy3a0wgf6yhq4tx90wctsgmwc9g` |
 
-*(Note: Midnight Network block explorers are currently internal/CLI-based during the Preview phase)*
+*(Note: Midnight Network block explorers are currently internal/CLI-based during the Preprod phase)*
 
 ## 🏁 Getting Started
 
