@@ -9,7 +9,7 @@
 
 ## 📌 Submission Links
 - **Live Demo**: [https://smart-contract-auditing-tool-hhy3b3ftk-vardhan20.vercel.app](https://smart-contract-auditing-tool-hhy3b3ftk-vardhan20.vercel.app)
-- **Demo Video**: [To be added by user (Wallet Connect + Successful Circuit Call)]
+- **Demo Video**: [Watch the Demo on Loom](https://www.loom.com/share/0d9ac1d5c1d84888807b85d3b16314c0)
 - **Contract Address**: `d088a2fdff8a35c4ca84486ef61b527516b81a98b5ee5af799eb499af44eda78` (Midnight Preview)
 
 ## 📖 About the Project
