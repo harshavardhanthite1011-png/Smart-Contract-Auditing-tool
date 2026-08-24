@@ -57,7 +57,7 @@ export const AuditApp: React.FC<AuditAppProps> = ({ walletState }) => {
       
       // 1. Send the contract code to the backend AI Analyzer
       console.log(`Sending ${language} code to backend API...`);
-      const response = await fetch('http://localhost:3001/api/audit', {
+      const response = await fetch('/api/audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ language, code: contractCode })
