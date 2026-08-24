@@ -4,8 +4,13 @@
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Tests](https://img.shields.io/badge/tests-3%2F3_passing-brightgreen)
-![Network](https://img.shields.io/badge/network-Midnight_Preview-blue)
+![Network](https://img.shields.io/badge/network-Midnight_Preprod-blue)
 ![License](https://img.shields.io/badge/license-MIT-purple)
+
+## 📌 Submission Links
+- **Live Demo**: [Deploying to Vercel...]
+- **Demo Video**: [To be added by user (Wallet Connect + Successful Circuit Call)]
+- **Contract Address**: `d088a2fdff8a35c4ca84486ef61b527516b81a98b5ee5af799eb499af44eda78` (Midnight Preprod)
 
 ## 📖 About the Project
 
