@@ -55,6 +55,9 @@ sequenceDiagram
 - **Zero-Knowledge Privacy**: Stores vulnerabilities locally as private witnesses; verifies them on-chain without exposing the exploit code to MEV bots.
 - **Selective Disclosure**: Auditors maintain full control over when to release findings to the public state using the `.disclose()` circuit.
 
+## 🔒 Privacy Claim
+This application uses the Midnight Network to protect sensitive vulnerability data via Zero-Knowledge (ZK) proofs. When a user submits an audit, only the **audit existence, contract hash, and overall severity score** are stored on the public blockchain state. The actual **vulnerability details, exploit paths, and sensitive code snippets** are kept entirely local as a private witness during the ZK circuit execution. This ensures that no malicious actors (like MEV bots or black-hat hackers) can front-run or exploit the discovered vulnerabilities before the development team has a chance to deploy a patch. The auditor retains cryptographic control to explicitly `.disclose()` the findings on-chain at a later time.
+
 ## 🛠 Tech Stack
 
 | Layer | Technologies Used |
