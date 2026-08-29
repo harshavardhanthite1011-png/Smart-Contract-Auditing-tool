@@ -9,7 +9,7 @@
 
 ## 📌 Submission Links
 - **Live Demo**: [https://smart-contract-auditing-tool.vercel.app](https://smart-contract-auditing-tool.vercel.app)
-- **Demo Video**: [Needs Manual Addition by User]
+- **Demo Video**: [Watch the Demo on Loom](https://www.loom.com/share/83c5930f3e9a4a26b318b5dca39275cd)
 
 ## 📖 About the Project
 
