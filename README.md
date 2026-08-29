@@ -91,6 +91,8 @@ Compiling 2 circuits:
 
 ✅ **4/4 contract-level tests passing**
 
+![Test Output](test-output.png)
+
 The test suite thoroughly verifies:
 1. Valid eligible voters can cast a ballot successfully.
 2. Double-voting is rejected.
