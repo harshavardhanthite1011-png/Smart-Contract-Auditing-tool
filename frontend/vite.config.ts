@@ -5,21 +5,23 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 5175,
+    strictPort: true,
     fs: {
       allow: [
         '.',
-        '../contracts/managed/ContractAuditor'
+        '../contracts/managed/PrivateVoting'
       ]
     }
   },
   resolve: {
     alias: {
-      '@contract': path.resolve(__dirname, '../contracts/managed/ContractAuditor/contract')
+      '@contract': path.resolve(import.meta.dirname, '../contracts/managed/PrivateVoting/contract')
     }
   },
   optimizeDeps: {
-    esbuildOptions: {
-      target: 'esnext'
+    rolldownOptions: {
+      // no options needed, just replacing esbuildOptions
     }
   },
   build: {

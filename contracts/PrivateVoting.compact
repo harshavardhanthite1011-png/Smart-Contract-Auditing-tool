@@ -1,0 +1,53 @@
+pragma language_version >= 0.14.0;
+import CompactStandardLibrary;
+
+export ledger merkle_root: Bytes<32>;
+export ledger nullifiers: Map<Bytes<32>, Boolean>;
+export ledger tally_yes: Counter;
+export ledger tally_no: Counter;
+
+constructor(root: Bytes<32>) {
+  merkle_root = disclose(root);
+}
+
+witness secret_passcode(): Bytes<32>;
+witness merkle_path(): Vector<2, Bytes<32>>;
+witness path_indices(): Vector<2, Boolean>;
+
+export circuit cast_vote(choice: Boolean): [] {
+  assert(
+    (path_indices()[1]
+      ? persistentHash<Vector<2, Bytes<32>>>([
+          (path_indices()[0]
+            ? persistentHash<Vector<2, Bytes<32>>>([secret_passcode(), merkle_path()[0]])
+            : persistentHash<Vector<2, Bytes<32>>>([merkle_path()[0], secret_passcode()])
+          ),
+          merkle_path()[1]
+        ])
+      : persistentHash<Vector<2, Bytes<32>>>([
+          merkle_path()[1],
+          (path_indices()[0]
+            ? persistentHash<Vector<2, Bytes<32>>>([secret_passcode(), merkle_path()[0]])
+            : persistentHash<Vector<2, Bytes<32>>>([merkle_path()[0], secret_passcode()])
+          )
+        ])
+    ) == merkle_root,
+    "Invalid Merkle Proof: Voter not in allowlist"
+  );
+  
+  assert(
+    !nullifiers.member(disclose(persistentHash<Vector<2, Bytes<32>>>([secret_passcode(), secret_passcode()]))),
+    "Voter has already cast a ballot"
+  );
+  
+  nullifiers.insert(
+    disclose(persistentHash<Vector<2, Bytes<32>>>([secret_passcode(), secret_passcode()])),
+    true
+  );
+  
+  if (disclose(choice)) {
+    tally_yes.increment(1);
+  } else {
+    tally_no.increment(1);
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "root": "9529acf23ccc07bdb0f3e9db77adf8df23cc2c471479741a3e2e8dd179744450",
+  "voters": [
+    {
+      "voterId": "Voter 1",
+      "passcode": "7c9cf227864f1502d29ad8e21641da7c85e7a16239478a9adf16faa72df9f350",
+      "path": [
+        "0e9b333a68aaabb703add4f5f5adae2ce8ae9c4ce90ac36316f2b1173ad79745",
+        "7d01dbcc0022802e66c1ef1c4a0a0c06e2781a366dd8089650a405571f367dd2"
+      ],
+      "indices": [
+        true,
+        true
+      ]
+    },
+    {
+      "voterId": "Voter 2",
+      "passcode": "0e9b333a68aaabb703add4f5f5adae2ce8ae9c4ce90ac36316f2b1173ad79745",
+      "path": [
+        "7c9cf227864f1502d29ad8e21641da7c85e7a16239478a9adf16faa72df9f350",
+        "7d01dbcc0022802e66c1ef1c4a0a0c06e2781a366dd8089650a405571f367dd2"
+      ],
+      "indices": [
+        false,
+        true
+      ]
+    },
+    {
+      "voterId": "Voter 3",
+      "passcode": "f4fe7b6af2ecf68f128b1647df94d4d50292d5cb0251fbd1d7cef347aa228ba6",
+      "path": [
+        "a2a1df1f4fd711dbdf5959123bf9b9dfbffc30743ca466c05bacf5dbd9e8865c",
+        "78d7e52b1e4ea14840ed9fc6ec32900051b10f462adee04729f1a090246a9beb"
+      ],
+      "indices": [
+        true,
+        false
+      ]
+    },
+    {
+      "voterId": "Voter 4",
+      "passcode": "a2a1df1f4fd711dbdf5959123bf9b9dfbffc30743ca466c05bacf5dbd9e8865c",
+      "path": [
+        "f4fe7b6af2ecf68f128b1647df94d4d50292d5cb0251fbd1d7cef347aa228ba6",
+        "78d7e52b1e4ea14840ed9fc6ec32900051b10f462adee04729f1a090246a9beb"
+      ],
+      "indices": [
+        false,
+        false
+      ]
+    }
+  ]
+}
