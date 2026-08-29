@@ -1,0 +1,199 @@
+{
+  "compiler-version": "0.31.1",
+  "language-version": "0.23.0",
+  "runtime-version": "0.16.0",
+  "circuits": [
+    {
+      "name": "submit_audit",
+      "pure": false,
+      "proof": true,
+      "arguments": [
+        {
+          "name": "audit_id",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        },
+        {
+          "name": "contract_hash",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        },
+        {
+          "name": "severity",
+          "type": {
+            "type-name": "Enum",
+            "name": "Severity",
+            "elements": [
+              "Safe",
+              "Low",
+              "Medium",
+              "High",
+              "Critical"
+            ]
+          }
+        },
+        {
+          "name": "vulnerability_commitment",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Tuple",
+        "types": [
+        ]
+      }
+    },
+    {
+      "name": "disclose_vulnerability",
+      "pure": false,
+      "proof": true,
+      "arguments": [
+        {
+          "name": "audit_id",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Tuple",
+        "types": [
+        ]
+      }
+    }
+  ],
+  "witnesses": [
+    {
+      "name": "vulnerability_witness",
+      "arguments": [
+        {
+          "name": "audit_id",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result type": {
+        "type-name": "Struct",
+        "name": "VulnerabilityDetails",
+        "elements": [
+          {
+            "name": "language",
+            "type": {
+              "type-name": "Bytes",
+              "length": 16
+            }
+          },
+          {
+            "name": "finding_type",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          },
+          {
+            "name": "description",
+            "type": {
+              "type-name": "Bytes",
+              "length": 64
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "contracts": [
+  ],
+  "ledger": [
+    {
+      "name": "audit_records",
+      "index": 0,
+      "exported": true,
+      "storage": "Map",
+      "key": {
+        "type-name": "Bytes",
+        "length": 32
+      },
+      "value": {
+        "type-name": "Struct",
+        "name": "AuditRecord",
+        "elements": [
+          {
+            "name": "contract_hash",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          },
+          {
+            "name": "severity",
+            "type": {
+              "type-name": "Enum",
+              "name": "Severity",
+              "elements": [
+                "Safe",
+                "Low",
+                "Medium",
+                "High",
+                "Critical"
+              ]
+            }
+          },
+          {
+            "name": "vulnerability_commitment",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "disclosed_vulnerabilities",
+      "index": 1,
+      "exported": true,
+      "storage": "Map",
+      "key": {
+        "type-name": "Bytes",
+        "length": 32
+      },
+      "value": {
+        "type-name": "Struct",
+        "name": "VulnerabilityDetails",
+        "elements": [
+          {
+            "name": "language",
+            "type": {
+              "type-name": "Bytes",
+              "length": 16
+            }
+          },
+          {
+            "name": "finding_type",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          },
+          {
+            "name": "description",
+            "type": {
+              "type-name": "Bytes",
+              "length": 64
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

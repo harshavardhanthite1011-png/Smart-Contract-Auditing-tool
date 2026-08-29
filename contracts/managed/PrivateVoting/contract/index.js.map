@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../../../",
+  "sources": ["contracts/PrivateVoting.compact", "compiler/standard-library.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAQA;;;;;;;;;;;;;;;;;;;MAQA,AAAA,SAoCC;;;;;cApCwB,QAAe;;;;;;;;;;;;;;;;;;yCAAf,QAAe;;;;;;;sEAAf,QAAe;;;OAoCvC;;;;GA1CA;EAFD;;;;;UAAY,MAAe;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAL3B;;;;;;;;;yEAAqC;IACrC;;;;;;;;;;yEAAkD;IAClD;;;;;;;;;yEAAiC;IACjC;;;;;;;;;yEAAgC;IAG9B;;;;;;;2HAAuB,MAAI;;yEAAhB;;;;;;;GACZ;ECVD,AAAA,kBAAA;oEAAA;;;EDYA,AAAA,kBAAqC;;0DAArC,eAAqC;;;;;;;;;;;;;;GAAA;EACrC,AAAA,cAA4C;;0DAA5C,WAA4C;;;;;;;;;;;;;;GAAA;EAC5C,AAAA,eAA2C;;0DAA3C,YAA2C;;;;;;;;;;;;;;GAAA;EAE3C,AAAA,YAoCC,4BApCwB,QAAe;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;kEAiB/B;;;;;;;;;;;uIAAW;;QAKf,KAAU;;;;;sDAAV;;;;;;;;;;;6KAAA,KAAU;;;;2HAAA;;UAIb,KAAU;;;;IAAV;;;;;;;;;;2HAAA,KAAU;;;;;;wEAAA;QAKG,QAAM;YACjB,KAAS;MAAT;;;;;;;;;;+FAAA,KAAS;;;;0EAAA;;YAET,KAAQ;MAAR;;;;;;;;;;+FAAA,KAAQ;;;;0EAAA;;;GAEX;;;;;;;;;;;;;;;;;;;;IAjDD;qCAAA;;;;;;;;;;;0GAAqC;KAAA;IACrC;;;;;uCAAA;;;;;;;;;;;;;;;;4GAAkD;;;;;;uCAAlD;;;;;;;;;;;;4GAAkD;;;;;;;;;;;;;;uCAAlD;;;;;;;;;;;;;;;4GAAkD;;;;;;;;;;;;;;uCAAlD;;;;;;;;;;;;;;;;;4GAAkD;;;;;;;;;KAAA;IAClD;qCAAA;;;;;;;;;;;0GAAiC;KAAA;IACjC;qCAAA;;;;;;;;;;;0GAAgC;KAAA;;;;;;;;;;;;;;"
+}

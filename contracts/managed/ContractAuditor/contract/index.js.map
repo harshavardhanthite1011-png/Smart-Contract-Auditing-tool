@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../../../",
+  "sources": ["contracts/ContractAuditor.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAAA;;;;;;;;;;;;;MA6BA,AAAA,YAaC;;;;;cAZC,UAAmB;cACnB,eAAwB;cACxB,UAAkB;cAClB,0BAAmC;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;yCAHnC,UAAmB,+BACnB,eAAwB,+BACxB,UAAkB,+BAClB,0BAAmC;;;;;;;;;8CAHnC,UAAmB;8CACnB,eAAwB;8CACxB,UAAkB;8CAClB,0BAAmC;;;OASpC;MAED,AAAA,sBAIC;;;;;cAJqC,UAAmB;;;;;;;;;;;;;;;;;;yCAAnB,UAAmB;;;;;;;;;wDAAnB,UAAmB;;;OAIxD;;;;;;;;;;GACA;EAjDD;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAwBA;;;;;;;;;;yEAAyD;IACzD;;;;;;;;;;yEAA8E;;;;;;;GAwB7E;EAtBD,AAAA,wBAAyE,4BAA3C,UAAmB;;0DAAjD,qBAAyE;gFAA3C,UAAmB;;;;;;;;;;;;;;GAAwB;EAEzE,AAAA,eAaC;;kBAZC,UAAmB;kBACnB,eAAwB;kBACxB,UAAkB;kBAClB,0BAAmC;;qDAE3B;;;;;;;;;;;4KAA8B,UAAQ;;;;0HAAzB;;UAErB,KAAa,oBACa,eAAa;8BAClB,UAAQ;8CACQ,0BAAwB;IAH7D;;;;;;;;;;2HAA8B,UAAQ;;;2HAAtC,KAAa;;;wEAAA;;GAKd;EAED,AAAA,yBAIC,4BAJqC,UAAmB;oDAChD;;;;;;;;;;;2KAA8B,UAAQ;;;;yHAAzB;;UAEpB,KAAyB;;gDAA2D,UAAQ;IAA5F;;;;;;;;;;2HAA0C,UAAQ;;;2HAAlD,KAAyB;;;wEAAA;;GAC1B;;;;;;;;;;;;;;;;IAxBD;;;;;uCAAA;;;;;;;;;;;;;;;;4GAAyD;;;;;;uCAAzD;;;;;;;;;;;;4GAAyD;;;;;;;;;;;;;;uCAAzD;;;;;;;;;;;;;;;4GAAyD;;;;;;;;;;;;;;uCAAzD;;;;;;;;;;;;;;;;;4GAAyD;;;;;;;;;KAAA;IACzD;;;;;uCAAA;;;;;;;;;;;;;;;;4GAA8E;;;;;;uCAA9E;;;;;;;;;;;;4GAA8E;;;;;;;;;;;;;;uCAA9E;;;;;;;;;;;;;;;4GAA8E;;;;;;;;;;;;;;uCAA9E;;;;;;;;;;;;;;;;;4GAA8E;;;;;;;;;KAAA;;;;;;;;;;;;"
+}

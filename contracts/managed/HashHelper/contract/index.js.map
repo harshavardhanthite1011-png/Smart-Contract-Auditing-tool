@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../../../",
+  "sources": ["contracts/HashHelper.compact", "compiler/standard-library.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAAA;;;;;;;;;;MAGA,AAAA,SAEC;;OAAA;;;;GACA;EAND;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;GAMC;ECND,AAAA,kBAAA;oEAAA;;;EDGA,AAAA,YAEC,CAFwB,MAAe,EAAE,OAAgB;mCACX,MAAI,EAAE,OAAK;GACzD;;;;;;;;;;;;;;;;;;;;;;;EAFD,AAAA,SAEC;;;;UAFwB,MAAe;UAAE,OAAgB;;;;;;;;;;;;;;;uCAAjC,MAAe,EAAE,OAAgB;GAEzD;;;;"
+}

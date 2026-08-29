@@ -2,10 +2,14 @@
 
 > **A Private Voting dApp built on the Midnight Network: Anonymous ballots with publicly verifiable tallies.**
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+[![CI](https://github.com/harshavardhanthite1011-png/Smart-Contract-Auditing-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/harshavardhanthite1011-png/Smart-Contract-Auditing-tool/actions/workflows/ci.yml)
 ![Tests](https://img.shields.io/badge/tests-4%2F4_passing-brightgreen)
 ![Network](https://img.shields.io/badge/network-Midnight_Preview-blue)
 ![License](https://img.shields.io/badge/license-MIT-purple)
+
+## 📌 Submission Links
+- **Live Demo**: [https://smart-contract-auditing-tool.vercel.app](https://smart-contract-auditing-tool.vercel.app)
+- **Demo Video**: [Needs Manual Addition by User]
 
 ## 📖 About the Project
 
@@ -42,8 +46,17 @@ sequenceDiagram
 - **Verifiable Tally**: While identities are hidden, the sum of the votes is entirely public and undeniable.
 - **Real-Time UI**: React frontend that connects seamlessly via `@midnight-ntwrk/dapp-connector-api`.
 
-## 🔒 Privacy Claim
-This application uses the Midnight Network to protect voter identities via Zero-Knowledge (ZK) proofs. When a user casts a ballot, their secret passcode and their specific Merkle path are passed into the circuit as **private witnesses**. The circuit locally proves inclusion in the allowlist and computes a deterministic nullifier. Only the **nullifier** and the **vote choice** are committed to the public ledger. The actual identity of the voter (the secret passcode) is never revealed to the public state, preventing any observer from mapping a specific vote back to a specific eligible voter.
+## 🔒 Privacy Model
+This application uses the Midnight Network to protect voter identities via Zero-Knowledge (ZK) proofs.
+
+### What an observer CAN learn (Public State)
+- That a valid, eligible voter has cast a ballot (represented by a deterministic nullifier appearing on-chain).
+- The overall public tally of the proposal (e.g., how many total Yes and No votes exist).
+- The Merkle root of the eligible voters (to mathematically prove eligibility).
+
+### What an observer CANNOT learn (Private Witnesses)
+- **Which specific voter cast the ballot.** The voter's identity (their secret passcode and specific Merkle path) is kept entirely local as a private witness. Observers cannot map a nullifier back to the voter.
+- **Which option a specific voter chose.** Because identities are hidden behind nullifiers, observers only see "Nullifier X voted Yes", but they CANNOT learn whether Alice or Bob generated Nullifier X.
 
 ## 🛠 Tech Stack
 

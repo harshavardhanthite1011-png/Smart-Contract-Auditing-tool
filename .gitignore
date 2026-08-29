@@ -15,8 +15,7 @@ build/
 .env.test.local
 .env.production.local
 
-# Contract artifacts
-contracts/managed/
+# Contract artifacts (committed so CI/CD and Vercel don't need the local compact compiler)
 
 # Deployment info
 deployment.json
