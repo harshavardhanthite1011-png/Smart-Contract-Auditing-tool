@@ -20,7 +20,9 @@ jobs:
         cache: 'npm'
 
     - name: Install Dependencies
-      run: npm ci
+      run: |
+        npm ci
+        cd frontend && npm ci
 
     - name: Generate Off-Chain Artifacts
       run: npm run generate-tree
