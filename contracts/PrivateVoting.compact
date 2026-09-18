@@ -5,9 +5,11 @@ export ledger merkle_root: Bytes<32>;
 export ledger nullifiers: Map<Bytes<32>, Boolean>;
 export ledger tally_yes: Counter;
 export ledger tally_no: Counter;
+ledger dummy: Boolean;
 
 constructor(root: Bytes<32>) {
   merkle_root = disclose(root);
+  dummy = false;
 }
 
 witness secret_passcode(): Bytes<32>;
@@ -50,4 +52,5 @@ export circuit cast_vote(choice: Boolean): [] {
   } else {
     tally_no.increment(1);
   }
+  dummy = disclose(choice);
 }

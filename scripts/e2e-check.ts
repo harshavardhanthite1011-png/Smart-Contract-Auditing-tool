@@ -22,7 +22,7 @@ import { CompiledContract } from '@midnight-ntwrk/midnight-js-protocol/compact-j
 globalThis.WebSocket = WebSocket;
 
 // Must match the privateStateId used at deploy time (witness-free → empty state).
-const PRIVATE_STATE_ID = 'helloWorldPrivateState';
+const PRIVATE_STATE_ID = 'privateVotingState';
 
 // ─── Network configuration ─────────────────────────────────────────────────────
 
@@ -56,12 +56,16 @@ async function main() {
 
   // 2. Build wallet and providers
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const zkConfigPath = path.resolve(__dirname, '..', 'contracts', 'managed', 'hello-world');
+  const zkConfigPath = path.resolve(__dirname, '..', 'contracts', 'managed', 'PrivateVoting');
   const contractPath = path.join(zkConfigPath, 'contract', 'index.js');
   if (!fs.existsSync(contractPath)) fail('Compiled contract missing — run `npm run compile`.');
-  const HelloWorld = await import(pathToFileURL(contractPath).href);
-  const compiledContract = CompiledContract.make('hello-world', HelloWorld.Contract).pipe(
-    CompiledContract.withVacantWitnesses,
+  const PrivateVoting = await import(pathToFileURL(contractPath).href);
+  const compiledContract = CompiledContract.make('PrivateVoting', PrivateVoting.Contract).pipe(
+    CompiledContract.withWitnesses({
+      secret_passcode: (context) => [context.state, Buffer.alloc(32)],
+      merkle_path: (context) => [context.state, [Buffer.alloc(32), Buffer.alloc(32)]],
+      path_indices: (context) => [context.state, [false, false]]
+    }),
     CompiledContract.withCompiledFileAssets(zkConfigPath),
   );
 
@@ -86,7 +90,7 @@ async function main() {
 
   const providers = {
     privateStateProvider: levelPrivateStateProvider({
-      privateStateStoreName: 'hello-world-state',
+      privateStateStoreName: 'private-voting-state',
       accountId: walletCtx.unshieldedKeystore.getBech32Address().toString(),
       // SDK requires ≥16 chars. e2e-check is read-only so we don't expose
       // the env-var override here — match the deploy script's local-devnet default.
@@ -104,8 +108,8 @@ async function main() {
     await findDeployedContract(providers, {
       contractAddress: deployment.address,
       compiledContract: compiledContract as any,
-      privateStateId: PRIVATE_STATE_ID,
-      initialPrivateState: {},
+      privateStateId: 'voting-e2e-state',
+      initialPrivateState: undefined as any,
     });
   } catch (err: any) {
     await walletCtx.wallet.stop();
@@ -120,10 +124,21 @@ async function main() {
     await walletCtx.wallet.stop();
     fail(`queryContractState returned null for ${deployment.address}`);
   }
+  
+  // Verify it has the expected ledger structure (tally_yes, tally_no, etc.)
+  const ledgerState = PrivateVoting.ledger(onChainState.data);
+  if (typeof ledgerState.tally_yes !== 'bigint' || typeof ledgerState.tally_no !== 'bigint') {
+    await walletCtx.wallet.stop();
+    fail(`queryContractState data missing tally_yes or tally_no. Data: ${ledgerState}`);
+  }
 
   console.log(`✅ e2e-check passed`);
   console.log(`   contractAddress: ${deployment.address}`);
   console.log(`   network:         ${network}`);
+  console.log(`   Indexer state retrieved:`);
+  console.log(`     tally_yes:   ${ledgerState.tally_yes}`);
+  console.log(`     tally_no:    ${ledgerState.tally_no}`);
+  console.log(`     merkle_root: ${Buffer.from(ledgerState.merkle_root).toString('hex')}`);
 
   await walletCtx.wallet.stop();
   process.exit(0);

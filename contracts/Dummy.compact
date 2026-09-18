@@ -1,0 +1,5 @@
+pragma language_version >= 0.14.0;
+import CompactStandardLibrary;
+export ledger dummy_ledger: Counter;
+constructor() {}
+export circuit dummy_circuit(): [] {}

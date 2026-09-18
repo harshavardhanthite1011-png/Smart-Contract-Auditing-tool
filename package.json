@@ -19,8 +19,9 @@
     "clean": "rm -rf contracts/managed .midnight-state.json .midnight-wallet-state",
     "test": "vitest run",
     "test:e2e": "tsx scripts/e2e-check.ts",
-    "frontend:dev": "cd frontend && npm run dev",
-    "frontend:build": "cd frontend && npm run build"
+    "frontend:dev": "mkdir -p frontend/public/contracts && cp -r contracts/managed/PrivateVoting frontend/public/contracts/ && cd frontend && npm run dev",
+    "frontend:build": "mkdir -p frontend/public/contracts && cp -r contracts/managed/PrivateVoting frontend/public/contracts/ && cd frontend && npm run build",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",
@@ -41,6 +42,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/ws": "^8.18.1",
+    "patch-package": "^8.0.1",
     "tsx": "^4.23.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11"

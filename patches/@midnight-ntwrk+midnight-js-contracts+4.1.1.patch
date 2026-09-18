@@ -1,0 +1,31 @@
+diff --git a/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.cjs b/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.cjs
+index 495232d..e29b543 100644
+--- a/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.cjs
++++ b/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.cjs
+@@ -1186,7 +1186,7 @@ class TransactionContextImpl {
+         const contractState = this.cachedStates.states.contractState;
+         const zswapChainState = this.cachedStates.states.zswapChainState; // Preserve the current Zswap chain state.
+         const ledgerParameters = this.cachedStates.states.ledgerParameters; // Preserve the current ledger parameters.
+-        contractState.data = new onchainRuntime.ChargedState(callData.public.nextContractState);
++        contractState.data = new contractState.data.constructor(contractState.data.state.constructor.decode(callData.public.nextContractState.encode()));
+         this[CacheStates]({ contractState, zswapChainState, ledgerParameters, privateState }, this.cachedStates.identity);
+     }
+ }
+diff --git a/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.mjs b/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.mjs
+index 98ed9f2..99960db 100644
+--- a/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.mjs
++++ b/node_modules/@midnight-ntwrk/midnight-js-contracts/dist/index.mjs
+@@ -1,3 +1,4 @@
++import { StateValue } from "@midnight-ntwrk/midnight-js-protocol/onchain-runtime";
+ import { ContractState as ContractState$1, sampleSigningKey } from '@midnight-ntwrk/midnight-js-protocol/compact-runtime';
+ import { ContractExecutable } from '@midnight-ntwrk/midnight-js-protocol/compact-js';
+ import { ttlOneHour, assertIsContractAddress, assertDefined, assertUndefined, parseCoinPublicKeyToHex, parseEncPublicKeyToHex, toHex } from '@midnight-ntwrk/midnight-js-utils';
+@@ -1184,7 +1185,7 @@ class TransactionContextImpl {
+         const contractState = this.cachedStates.states.contractState;
+         const zswapChainState = this.cachedStates.states.zswapChainState; // Preserve the current Zswap chain state.
+         const ledgerParameters = this.cachedStates.states.ledgerParameters; // Preserve the current ledger parameters.
+-        contractState.data = new ChargedState(callData.public.nextContractState);
++        contractState.data = new contractState.data.constructor(contractState.data.state.constructor.decode(callData.public.nextContractState.encode()));
+         this[CacheStates]({ contractState, zswapChainState, ledgerParameters, privateState }, this.cachedStates.identity);
+     }
+ }

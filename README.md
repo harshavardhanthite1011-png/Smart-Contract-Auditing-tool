@@ -11,6 +11,10 @@
 - **Live Demo**: [https://smart-contract-auditing-tool.vercel.app](https://smart-contract-auditing-tool.vercel.app)
 - **Demo Video**: [Watch the Demo on Loom](https://www.loom.com/share/83c5930f3e9a4a26b318b5dca39275cd)
 
+## 🌐 Midnight Network Deployment (Preview)
+- **Contract Address:** `9f51d1be135207f5c9c9cabd1c2e387e3e24fcab9a7a6ad094523e560ae81f87`
+- **Network:** Preview Testnet
+
 ## 📖 About the Project
 
 **Midnight New Moon to Full Moon — Level Three** demonstrates a complete, production-grade decentralized application for Private Voting leveraging the **Midnight Network's Zero-Knowledge capabilities**. 
@@ -23,27 +27,31 @@ Voting on public ledgers often exposes a voter's identity and choice, leading to
 - **Nullifier Protection:** The contract computes a unique, deterministic nullifier from the voter's secret passcode using Midnight's `persistentHash`. This nullifier is stored publicly to prevent double-voting, but cannot be traced back to the voter.
 - **Public Tally:** The vote choice (Yes/No) is recorded on the public ledger state, incrementing the tally in a verifiable way.
 
-## 🏛 Architecture & Privacy Model
+## 🏛 Architecture & Privacy Model (Genuine Midnight Integration)
 
 ```mermaid
 sequenceDiagram
     participant Voter
     participant Frontend (React)
-    participant Lace Wallet
-    participant Midnight Network (Contract)
+    participant Midnight SDK (dapp-connector)
+    participant Midnight Network (Contract/Indexer)
 
     Voter->>Frontend: Selects choice and inputs Secret Passcode
-    Frontend->>Lace Wallet: Request ZK Execution (Passcode + Merkle Path as Private Witnesses)
-    Lace Wallet-->>Lace Wallet: Generates ZK Proof & computes Nullifier
-    Lace Wallet->>Midnight Network: Submits ZK Proof (Tally & Nullifier public, Passcode hidden)
+    Frontend->>Midnight SDK: Find deployed contract & Call `txBuilders.cast_vote(isYes)`
+    Midnight SDK->>Midnight SDK: Executes ZK Circuit locally using Passcode & Merkle Path witnesses
+    Midnight SDK->>Midnight SDK: `api.balanceTx(unboundTx)` balances DUST and constructs ZK proof
+    Midnight SDK->>Midnight Network: `api.submitTx(balancedTx)` submits to Preview Network
     Midnight Network-->>Frontend: Transaction Confirmed
+    Frontend->>Midnight Network: Queries public tally via Indexer (`publicDataProvider`)
+    Midnight Network-->>Frontend: Returns genuine ledger state
     Frontend-->>Voter: Tally Updated & Vote Cast Anonymously
 ```
 
 ## ✨ Features
 - **Zero-Knowledge Privacy**: Voter identities and choices are never exposed. Proof generation happens entirely on the client side using the Midnight Wallet extension.
+- **Genuine Testnet Integration**: Uses `@midnight-ntwrk/midnight-js-contracts` to natively build, balance, and submit transactions to the Midnight Preview Network.
 - **Double-Voting Prevention**: Nullifiers are computed inside the ZK circuit, guaranteeing each eligible voter can only cast exactly one ballot.
-- **Verifiable Tally**: While identities are hidden, the sum of the votes is entirely public and undeniable.
+- **Verifiable Tally**: The frontend fetches the live, verifiable tally directly from the public indexer state (`publicDataProvider`), removing the need for local simulated mocks.
 - **Real-Time UI**: React frontend that connects seamlessly via `@midnight-ntwrk/dapp-connector-api`.
 
 ## 🔒 Privacy Model
@@ -132,7 +140,19 @@ Generates the voter passcodes and computes the Merkle Root for the contract depl
 npm run generate-tree
 ```
 
-### 3. Start the Frontend Application
+### 3. Deploy to Testnet
+Deploy the `PrivateVoting.compact` contract to the Midnight Preview testnet using the provided script.
+```bash
+npm run deploy -- --network preview
+```
+
+### 4. Start the Frontend Application
+Ensure you set your deployed contract address inside `frontend/.env`:
+```
+VITE_NETWORK=preview
+VITE_CONTRACT_ADDRESS=9f51d1be135207f5c9c9cabd1c2e387e3e24fcab9a7a6ad094523e560ae81f87
+```
+
 ```bash
 cd frontend
 npm run dev

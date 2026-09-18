@@ -24,7 +24,7 @@ import { CompiledContract } from '@midnight-ntwrk/midnight-js-protocol/compact-j
 globalThis.WebSocket = WebSocket;
 
 // identifier under which this contract's private state is stored.
-const PRIVATE_STATE_ID = 'contractAuditorPrivateState';
+const PRIVATE_STATE_ID = 'privateVotingState';
 
 // ─── Network configuration ─────────────────────────────────────────────────────
 //
@@ -70,7 +70,7 @@ async function waitForProofServer(maxAttempts = 60, delayMs = 2000): Promise<boo
 // ─── Compiled contract loading ─────────────────────────────────────────────────
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const zkConfigPath = path.resolve(__dirname, '..', 'contracts', 'managed', 'ContractAuditor');
+const zkConfigPath = path.resolve(__dirname, '..', 'contracts', 'managed', 'PrivateVoting');
 const contractPath = path.join(zkConfigPath, 'contract', 'index.js');
 
 if (!fs.existsSync(contractPath)) {
@@ -78,16 +78,16 @@ if (!fs.existsSync(contractPath)) {
   process.exit(1);
 }
 
-const ContractAuditor = await import(pathToFileURL(contractPath).href);
+// @ts-ignore
+import treeData from '../frontend/src/tree.json' assert { type: 'json' };
 
-const compiledContract = CompiledContract.make('ContractAuditor', ContractAuditor.Contract).pipe(
+const PrivateVoting = await import(pathToFileURL(contractPath).href);
+
+const compiledContract = CompiledContract.make('PrivateVoting', PrivateVoting.Contract).pipe(
   CompiledContract.withWitnesses({
-    vulnerability_witness: () => ({
-      hash: Buffer.alloc(32),
-      severity: 1n,
-      auditor_id: Buffer.alloc(32),
-      findings: Buffer.alloc(32)
-    })
+    secret_passcode: (context) => [context.state, Buffer.alloc(32)],
+    merkle_path: (context) => [context.state, [Buffer.alloc(32), Buffer.alloc(32)]],
+    path_indices: (context) => [context.state, [false, false]]
   }),
   CompiledContract.withCompiledFileAssets(zkConfigPath),
 );
@@ -299,9 +299,9 @@ async function main() {
       // args is the contract constructor's arguments: empty for this contract's no-arg constructor.
       deployed = await deployContract(providers, {
         compiledContract: compiledContract as any,
-        args: [],
+        args: [new Uint8Array(Buffer.from(treeData.root, 'hex'))],
         privateStateId: PRIVATE_STATE_ID,
-        initialPrivateState: {},
+        initialPrivateState: undefined as any,
       });
       break;
     } catch (err: any) {
@@ -362,7 +362,9 @@ async function main() {
 
   const contractAddress = deployed.deployTxData.public.contractAddress;
   console.log('  ✅ Contract deployed successfully!\n');
-  console.log(`  Contract Address: ${contractAddress}\n`);
+  console.dir(deployed, { depth: null });
+  console.log(`  Contract Address: ${contractAddress}`);
+  console.log(`  Transaction Hash: ${deployed.deployTxData.public.txHash || 'N/A'}\n`);
 
   recordDeployment(network, contractAddress, address.toString());
   console.log('  Saved to .midnight-state.json\n');
