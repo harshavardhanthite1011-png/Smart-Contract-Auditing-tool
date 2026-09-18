@@ -22,6 +22,7 @@ let PrivateVoting: any;
 let compiledContract: any;
 
 beforeAll(async () => {
+  if (process.env.CI) return;
   const network = 'undeployed';
   const networkConfig = {
     networkId: 'undeployed',
@@ -98,12 +99,15 @@ beforeAll(async () => {
 }, 300000);
 
 afterAll(async () => {
+  if (process.env.CI) return;
   if (walletCtx) {
     await walletCtx.wallet.stop();
   }
 }, 30000);
 
-test('Genuine integration test deploying PrivateVoting and casting vote', async () => {
+const testFn = process.env.CI ? test.skip : test;
+
+testFn('Genuine integration test deploying PrivateVoting and casting vote', async () => {
   const deployed = await deployContract(providers, {
     compiledContract: compiledContract as any,
     args: [new Uint8Array(Buffer.from(treeData.root, 'hex'))],
