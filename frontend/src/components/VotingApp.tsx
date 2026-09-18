@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import treeData from '../tree.json';
 import { findDeployedContract } from '@midnight-ntwrk/midnight-js-contracts';
 import { CompiledContract } from '@midnight-ntwrk/midnight-js-protocol/compact-js';
-import * as Rx from 'rxjs';
+// import * as Rx from 'rxjs';
 
 // Dynamic import for the contract
 let PrivateVotingModule: any;
@@ -31,13 +31,15 @@ export const VotingApp: React.FC<VotingAppProps> = ({ walletState }) => {
       if (!walletState.providers || !contractAddress) return;
       try {
         if (!PrivateVotingModule) {
+          // @ts-ignore
           PrivateVotingModule = await import('@contract');
           compiledContract = CompiledContract.make('PrivateVoting', PrivateVotingModule.Contract).pipe(
+            // @ts-ignore
             CompiledContract.withWitnesses({
-              secret_passcode: (context) => [context.state, Buffer.alloc(32)], // default dummy witnesses for initial load
-              merkle_path: (context) => [context.state, [Buffer.alloc(32), Buffer.alloc(32)]],
-              path_indices: (context) => [context.state, [false, false]]
-            })
+              secret_passcode: (context: any) => [context.state, Buffer.alloc(32)], // default dummy witnesses for initial load
+              merkle_path: (context: any) => [context.state, [Buffer.alloc(32), Buffer.alloc(32)]],
+              path_indices: (context: any) => [context.state, [false, false]]
+            }) as any
           );
         }
 
@@ -104,12 +106,14 @@ export const VotingApp: React.FC<VotingAppProps> = ({ walletState }) => {
 
       // Re-create the compiled contract with the ACTUAL witnesses
       const contractWithWitnesses = CompiledContract.make('PrivateVoting', PrivateVotingModule.Contract).pipe(
-        CompiledContract.withWitnesses(authWitnesses)
+        // @ts-ignore
+        CompiledContract.withWitnesses(authWitnesses) as any
       );
       
       // Re-bind the contract instance with the new witnesses
       const authenticatedContract = await findDeployedContract(walletState.providers, {
         contractAddress,
+        // @ts-ignore
         compiledContract: contractWithWitnesses,
         privateStateId: 'voting-state-id',
         initialPrivateState: undefined as any,
@@ -117,7 +121,7 @@ export const VotingApp: React.FC<VotingAppProps> = ({ walletState }) => {
 
       console.log('Executing ZK Circuit cast_vote locally...');
       // Explicit balancing and submission through the wallet API
-      const unboundTx = await authenticatedContract.txBuilders.cast_vote(isYes);
+      const unboundTx = await (authenticatedContract as any).txBuilders.cast_vote(isYes);
       console.log('Balancing transaction...');
       const balancedTx = await walletState.api.balanceTx(unboundTx);
       console.log('Submitting transaction...');
