@@ -145,12 +145,17 @@ Deploy the `PrivateVoting.compact` contract to the Midnight Preview testnet usin
 ```bash
 npm run deploy -- --network preview
 ```
+**Deployed Contract Address (Preview Network):**
+`c52e53be5234153562e71b753687ea3dc4286e8b684d63f866c46402eff82d05`
+
+**Deployment Transaction Hash:**
+`e0d611ed0b4eeda1d73b74cd4a3ad26a28d1a1f4ca1b4405ba8cd77fd6f80936`
 
 ### 4. Start the Frontend Application
 Ensure you set your deployed contract address inside `frontend/.env`:
 ```
 VITE_NETWORK=preview
-VITE_CONTRACT_ADDRESS=9f51d1be135207f5c9c9cabd1c2e387e3e24fcab9a7a6ad094523e560ae81f87
+VITE_CONTRACT_ADDRESS=c52e53be5234153562e71b753687ea3dc4286e8b684d63f866c46402eff82d05
 ```
 
 ```bash
